@@ -23,7 +23,6 @@ public class IFace {
 		System.out.println("Enviar Mensagens");
 		System.out.println("Criar Comunidade");
 		System.out.println("Adicionar Membros");
-		System.out.println("Recuperar Informações");
 		System.out.println("Remover Conta");
 		System.out.println("Acessar Conta");
 		funcionalidade = teclado.nextLine();
@@ -206,10 +205,6 @@ public class IFace {
 			else{
 				System.out.println("Ocorreu um erro: Nome não encontrado:");								
 			}
-		}
-		
-		else if(funcionalidade.equalsIgnoreCase("Recuperar Informações")) {
-			System.out.println("7");
 		}
 		
 		else if(funcionalidade.equalsIgnoreCase("Remover Conta")) {
