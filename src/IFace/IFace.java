@@ -10,8 +10,8 @@ public class IFace {
 	 
 	teclado = new Scanner(System.in);
 	ArrayList<Usuario> lista = new ArrayList<>();
-	String funcionalidade = null;
-	while(funcionalidade.equalsIgnoreCase("Sair")) {
+	String funcionalidade = "Entrar";
+	while(funcionalidade.equalsIgnoreCase("Sair") != true) {
 		System.out.println("Deseja: Criar Conta ou Acessar Conta.");
 		funcionalidade = teclado.nextLine();
 		if(funcionalidade.equalsIgnoreCase("Criar Conta")) {
@@ -36,7 +36,7 @@ public class IFace {
  }
  
  public static void acessarconta(Usuario usuario,ArrayList<Usuario> lista) {
-	while(procurar.equalsIgnoreCase("Sair")) {
+	while(procurar.equalsIgnoreCase("Sair") != true) {
 		System.out.println("Deseja: Adicionar Amigos, Editar Conta, Enviar Mensagens, Criar Comunidade, Adicionar Membros, Recuperar Informações, Remover Conta ou Sair.");
 		procurar = teclado.nextLine();
 		if(procurar.equalsIgnoreCase("Editar Conta")) {
@@ -59,6 +59,15 @@ public class IFace {
 		}
 		else if(procurar.equalsIgnoreCase("Remover Conta")) {
 			removerconta(lista,usuario);
+		}
+		else if(procurar.equalsIgnoreCase("Notificacoes")) {
+			notificacoes(usuario);
+		}
+		else if(procurar.equalsIgnoreCase("Ver Mensagens")) {
+			vermensagens(usuario);
+		}
+		else if(procurar.equalsIgnoreCase("Ver Comunidade")) {
+			vercomunidade(usuario);
 		}
 		else {
 			System.out.println("Ops!. Houve um erro de digitação, por favor repita o procedimento.");
@@ -145,6 +154,10 @@ public class IFace {
 						System.out.println("Solicitção de Amizade feito para " + index1.getNome()+ " com sucesso!");						
 					}
 				}
+				if(usuario.amigos.size() == 0) {
+					index1.setSolicitacaoDeAmizade(usuario);
+					System.out.println("Solicitção de Amizade feito para " + index1.getNome()+ " com sucesso!");			
+				}
 			}
 			else if(count>lista.size()) {
 				System.out.println("Ocorreu um erro: Nome não encontrado.");
@@ -160,11 +173,16 @@ public class IFace {
 	if(procurar.equalsIgnoreCase("Amigo")) {
 		System.out.println("Enviar para quem:");
 		procurar = teclado.nextLine();
-		for(Mensagem mensagem: usuario.getMensagem()) {
-			if(mensagem.getAmigo().getNome().equalsIgnoreCase(procurar)) {
+		for(Mensagem destinatario: usuario.getMensagem()) {
+			if(destinatario.getAmigo().getNome().equalsIgnoreCase(procurar)) {
 				System.out.println("Digite a mensagem:");
 				String msg = teclado.nextLine();
-				mensagem.setMensagens(msg);				
+				destinatario.setMensagens(msg);
+				for(Mensagem emissor: destinatario.getAmigo().getMensagem()) {
+					if(emissor.getAmigo().getNome().equalsIgnoreCase(usuario.getNome())) {
+						emissor.setMensagens(msg);
+					}
+				}
 				break;
 			}
 			++count;
@@ -233,15 +251,7 @@ public class IFace {
  		}		
  }
  public static void recuperardados(Usuario usuario,boolean posicao) {
-	  if(posicao) {
-		 if(usuario.backup.size() > usuario.getIndicibackup()+1) {
-			 usuario.setBackup(usuario);
-			 usuario = usuario.getBackup(usuario.getIndicibackup());
-		 }
-		 else {
-			usuario.setBackup(usuario);
-		 }
-	 }
+	 
  }
  public static void removerconta(ArrayList<Usuario> lista,Usuario usuario) {
  		lista.remove(usuario);		
@@ -265,11 +275,34 @@ public class IFace {
 		 procurar = teclado.nextLine();
 		 if(procurar.equalsIgnoreCase("Sim")) {
 			 usuario.amigos.add(amizades);
-			 Mensagem mensagem = new Mensagem();
-			 mensagem.setAmigo(amizades);
-			 usuario.setMensagem(mensagem);
+			 amizades.amigos.add(usuario);
+			 Mensagem mensagem1 = new Mensagem();
+			 mensagem1.setAmigo(usuario);
+			 amizades.setMensagem(mensagem1);
+			 Mensagem mensagem2 = new Mensagem();
+			 mensagem2.setAmigo(amizades);
+			 usuario.setMensagem(mensagem2);			 
+		 }
+	 }	
+	 usuario.getSolicitacaoDeAmizade().clear();
+ }
+ 
+ public static void vermensagens(Usuario usuario) {
+	 for(Mensagem amigo: usuario.getMensagem()) {
+		 System.out.println(amigo.getAmigo().getNome()+":");
+		 for(String mensagem: amigo.getMensagens()) {
+			 System.out.println(mensagem);
 		 }
 	 }
-	 
  }
+ 
+ public static void vercomunidade(Usuario usuario) {
+	 for(Comunidade comunidade: usuario.comunidade) {
+		 System.out.println(comunidade.getNomeComunidade());
+		 for(String mensagem: comunidade.getMensagem()) {
+			 System.out.println(mensagem);
+		 }
+	 }
+ }
+ 
 }
