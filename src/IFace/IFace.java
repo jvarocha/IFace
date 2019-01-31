@@ -37,7 +37,7 @@ public class IFace {
  
  public static void acessarconta(Usuario usuario,ArrayList<Usuario> lista) {
 	while(procurar.equalsIgnoreCase("Sair") != true) {
-		System.out.println("Deseja: Adicionar Amigos, Editar Conta, Enviar Mensagens, Criar Comunidade, Adicionar Membros, Recuperar Informações, Remover Conta ou Sair.");
+		System.out.println("Deseja: Adicionar Amigos, Editar Conta, Enviar Mensagens, Criar Comunidade, Adicionar Membros, Recuperar Informações,Ver Mensagens,Ver Comunidade ,Remover Conta ou Sair.");
 		procurar = teclado.nextLine();
 		if(procurar.equalsIgnoreCase("Editar Conta")) {
 			editarperfil(usuario);
